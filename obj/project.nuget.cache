@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4Le5sFHOcwU=",
+  "dgSpecHash": "Z5IJok/VtbA=",
   "success": true,
-  "projectFilePath": "C:\\xampp\\htdocs\\Practicas-web-2\\Tarea2\\Tarea2.csproj",
+  "projectFilePath": "C:\\xampp\\htdocs\\Practicas-web-2\\Practica1-y-2\\Tarea2\\Tarea2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\felib\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.extensions\\6.0.0\\microsoft.aspnetcore.mvc.razor.extensions.6.0.0.nupkg.sha512",
     "C:\\Users\\felib\\.nuget\\packages\\microsoft.aspnetcore.mvc.razor.runtimecompilation\\9.0.8\\microsoft.aspnetcore.mvc.razor.runtimecompilation.9.0.8.nupkg.sha512",
