@@ -5,11 +5,29 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Tarea2.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Tarea2.Data
 {
-    public class AppDbContext : IdentityDbContext<User>
+
+     public class User : IdentityUser<int>
+    {
+        // Navegación a roles
+         public ICollection<IdentityUserRole<int>> UserRoles { get; set; } = new List<IdentityUserRole<int>>();
+    }
+
+    public class Role : IdentityRole<int>
+    {
+        public ICollection<IdentityUserRole<int>> UserRoles { get; set; } = new List<IdentityUserRole<int>>();
+    }
+
+    public class UserRole : IdentityUserRole<int>
+    {
+        public User User { get; set; } = null!;
+        public Role Role { get; set; } = null!;
+    }
+
+    public class AppDbContext : IdentityDbContext<User, Role, int>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -18,13 +36,7 @@ namespace Tarea2.Data
 
         // Tablas
         public DbSet<CharacterInfo> CharacterInfo { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<UserRole> UserRoles { get; set; }
-        public DbSet<UserClaim> UserClaims { get; set; }
-        public DbSet<UserLogin> UserLogins { get; set; }
-        public DbSet<UserToken> UserTokens { get; set; }
-        public DbSet<RoleClaim> RoleClaims { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -46,60 +58,8 @@ namespace Tarea2.Data
                 entity.Property(e => e.thumb_img).HasMaxLength(500);
             });
 
-            // UserRole PK compuesta
-            modelBuilder.Entity<UserRole>()
-                .HasKey(ur => new { ur.UserId, ur.RoleId });
-
-            // UserLogin PK compuesta
-            modelBuilder.Entity<UserLogin>()
-                .HasKey(ul => new { ul.LoginProvider, ul.ProviderKey });
-
-            // UserToken PK compuesta
-            modelBuilder.Entity<UserToken>()
-                .HasKey(ut => new { ut.UserId, ut.LoginProvider, ut.Name });
-
-            // Relaciones
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.Role)
-                .WithMany(r => r.Users)
-                .HasForeignKey(u => u.Rol)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<UserRole>()
-                .HasOne(ur => ur.User)
-                .WithMany(u => u.UserRoles)
-                .HasForeignKey(ur => ur.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<UserRole>()
-                .HasOne(ur => ur.Role)
-                .WithMany(r => r.UserRoles)
-                .HasForeignKey(ur => ur.RoleId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<UserClaim>()
-                .HasOne(uc => uc.User)
-                .WithMany(u => u.UserClaims)
-                .HasForeignKey(uc => uc.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<UserLogin>()
-                .HasOne(ul => ul.User)
-                .WithMany(u => u.UserLogins)
-                .HasForeignKey(ul => ul.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<UserToken>()
-                .HasOne(ut => ut.User)
-                .WithMany(u => u.UserTokens)
-                .HasForeignKey(ut => ut.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<RoleClaim>()
-                .HasOne(rc => rc.Role)
-                .WithMany(r => r.RoleClaims)
-                .HasForeignKey(rc => rc.RoleId)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<CharacterInfo>().HasKey(c => c.id);
+            modelBuilder.Entity<IdentityUserRole<int>>().HasKey(ur => new { ur.UserId, ur.RoleId });
         }
 
         // Seed dinámico desde API
