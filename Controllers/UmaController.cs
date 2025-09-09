@@ -5,45 +5,37 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Tarea2.Models;
+using Tarea2.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Tarea2.Controllers
 {
     public class UmaController : Controller
     {
 
-        private readonly HttpClient ClienteHttp;
-        private readonly List<CharacterInfo> Umamusumes;
+        private readonly AppDbContext _context;
 
-        public UmaController(HttpClient httpClient)
+        public UmaController(AppDbContext context)
         {
-            ClienteHttp = httpClient;
-
-            Umamusumes = CallApi().GetAwaiter().GetResult();
-        }
-
-        private async Task<List<CharacterInfo>> CallApi()
-        {
-            var respuesta = await ClienteHttp.GetAsync("https://umapyoi.net/api/v1/character/list");
-            respuesta.EnsureSuccessStatusCode();
-
-            var json = await respuesta.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<CharacterInfo>>(json) ?? new List<CharacterInfo>();
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View(Umamusumes);
+            var umamusumes = _context.CharacterInfo.ToList();
+            return View(umamusumes);
         }
 
         public IActionResult List()
         {
-            return View(Umamusumes);
+            var umamusumes = _context.CharacterInfo.ToList();
+            return View(umamusumes);
         }
 
         public IActionResult Find()
         {
-
-            return View(Umamusumes);
+            var umamusumes = _context.CharacterInfo.ToList();
+            return View(umamusumes);
         }
 
         public IActionResult Details()
