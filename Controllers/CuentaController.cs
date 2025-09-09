@@ -12,7 +12,7 @@ namespace Tarea2.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
-        private readonly ILogger<CuentaController> _logger;
+        private readonly ILogger<CuentaController> _logger; 
 
         public CuentaController(
             SignInManager<User> signInManager,

@@ -2,7 +2,6 @@ using Tarea2.Controllers;
 using Tarea2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Tarea2.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +14,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 // Configurar Identity
-builder.Services.AddIdentity<Tarea2.Models.User, Tarea2.Models.Role>(options =>
+builder.Services.AddIdentity<User, Role>(options =>
 {
     options.Password.RequireDigit = false;
     options.Password.RequireNonAlphanumeric = false;

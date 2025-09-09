@@ -21,12 +21,6 @@ namespace Tarea2.Data
         public ICollection<IdentityUserRole<int>> UserRoles { get; set; } = new List<IdentityUserRole<int>>();
     }
 
-    public class UserRole : IdentityUserRole<int>
-    {
-        public User User { get; set; } = null!;
-        public Role Role { get; set; } = null!;
-    }
-
     public class AppDbContext : IdentityDbContext<User, Role, int>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
