@@ -12,7 +12,6 @@ namespace Tarea2.Models
         [MaxLength(255)]
         public string TeamName { get; set; } = string.Empty;
 
-        // Navigation property para los miembros del equipo
         public virtual ICollection<TeamMember> TeamMembers { get; set; } = new List<TeamMember>();
     }
 }

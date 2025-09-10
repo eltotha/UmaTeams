@@ -46,9 +46,8 @@ namespace Tarea2.Controllers
 
             if (ModelState.IsValid)
             {
-                // Use UserName instead of Username if that's the property name
                 var result = await _signInManager.PasswordSignInAsync(
-                    model.Username, // This should match your LoginViewModel
+                    model.Username, 
                     model.Password,
                     model.RememberMe,
                     lockoutOnFailure: false);
@@ -141,7 +140,7 @@ namespace Tarea2.Controllers
 
             var model = new PerfilViewModel
             {
-                Username = user.UserName ?? string.Empty, // Use UserName
+                Username = user.UserName ?? string.Empty, 
             };
 
             return View(model);

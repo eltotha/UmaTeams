@@ -222,7 +222,7 @@
                     }
                 });
                 
-                // Ocultar resultados al hacer clic fuera
+                // Ocultar resultados al hacer clic afuera
                 document.addEventListener('click', function(e) {
                     if (!input.contains(e.target) && !resultsDiv.contains(e.target)) {
                         resultsDiv.style.display = 'none';
@@ -230,7 +230,7 @@
                 });
             });
             
-            // Confirmación para eliminar equipo
+            // Confirmacion para eliminar equipo
             const deleteForms = document.querySelectorAll('form[asp-action="DeleteTeam"]');
             deleteForms.forEach(form => {
                 form.addEventListener('submit', function(e) {
@@ -241,7 +241,7 @@
                 });
             });
             
-            // Estilos para los resultados de búsqueda
+            // Estilos para los resultados de busqueda
             const style = document.createElement('style');
             style.textContent = `
                 .search-results {

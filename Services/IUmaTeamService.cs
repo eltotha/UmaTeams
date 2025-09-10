@@ -11,7 +11,7 @@ namespace Tarea2.Services
         Task<UmaTeam> CreateTeamAsync(string teamName);
         Task AddMemberToTeamAsync(int teamId, int umaId);
         Task RemoveMemberFromTeamAsync(int memberId);
-        Task DeleteTeamAsync(int teamId); // ← Mantén este como estaba originalmente
+        Task DeleteTeamAsync(int teamId);
         Task<List<CharacterInfo>> SearchCharactersAsync(string searchTerm);
     }
 }

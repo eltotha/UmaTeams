@@ -21,7 +21,6 @@ namespace Tarea2.Models
         [MaxLength(500)]
         public string? UmaImage { get; set; }
 
-        // Navigation properties
         [ForeignKey("TeamId")]
         public virtual UmaTeam Team { get; set; } = null!;
 

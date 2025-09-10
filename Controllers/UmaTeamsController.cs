@@ -45,7 +45,7 @@ namespace Tarea2.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddMember(int teamId, int umaId) // ← Cambiado: solo umaId
+        public async Task<IActionResult> AddMember(int teamId, int umaId)
         {
             try
             {
