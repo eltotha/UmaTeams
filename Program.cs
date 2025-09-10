@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Tarea2.Data;
 using Tarea2.Services;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using Google.Protobuf.WellKnownTypes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,21 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Cuenta/AccessDenied";
     options.LogoutPath = "/Cuenta/Logout"; // Changed from LoginPath to LogoutPath
 });
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+builder.Services.AddAuthentication("Cookies")
+    .AddCookie("Cookies", options =>
+    {
+        options.LoginPath = "/Cuenta/Login";
+        options.ExpireTimeSpan = TimeSpan.FromSeconds(10);
+        options.SlidingExpiration = true;
+    });
 
 // Agregar esto después de los otros servicios
 builder.Services.AddScoped<IUmaTeamService, UmaTeamService>();
@@ -88,6 +105,6 @@ app.UseAuthorization();
 // FIXED: Removed duplicate MapStaticAssets() calls
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Cuenta}/{action=Login}/{id?}");
 
 app.Run();
