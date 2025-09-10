@@ -2,6 +2,7 @@ using Tarea2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Tarea2.Data;
+using Tarea2.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,9 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Cuenta/AccessDenied";
     options.LogoutPath = "/Cuenta/Logout"; // Changed from LoginPath to LogoutPath
 });
+
+// Agregar esto después de los otros servicios
+builder.Services.AddScoped<IUmaTeamService, UmaTeamService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

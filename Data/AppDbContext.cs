@@ -18,6 +18,8 @@ namespace Tarea2.Data
 
         // Tablas
         public DbSet<CharacterInfo> CharacterInfo { get; set; }
+        public DbSet<UmaTeam> UmaTeams { get; set; }
+        public DbSet<TeamMember> TeamMembers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,6 +40,35 @@ namespace Tarea2.Data
                 entity.Property(e => e.name_jp).HasMaxLength(255);
                 entity.Property(e => e.preferred_url).HasMaxLength(500);
                 entity.Property(e => e.thumb_img).HasMaxLength(500);
+            });
+
+            // Configurar UmaTeams
+            modelBuilder.Entity<UmaTeam>(entity =>
+            {
+                entity.ToTable("UmaTeams");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.TeamName).IsRequired().HasMaxLength(255);
+            });
+
+            // Configurar TeamMembers
+            modelBuilder.Entity<TeamMember>(entity =>
+            {
+                entity.ToTable("TeamMembers");
+                entity.HasKey(e => e.Id);
+                
+                entity.Property(e => e.UmaName).IsRequired().HasMaxLength(255);
+                entity.Property(e => e.UmaImage).HasMaxLength(500);
+                
+                // Configurar relaciones
+                entity.HasOne(tm => tm.Team)
+                      .WithMany(t => t.TeamMembers)
+                      .HasForeignKey(tm => tm.TeamId)
+                      .OnDelete(DeleteBehavior.Cascade);
+                
+                entity.HasOne(tm => tm.CharacterInfo)
+                      .WithMany()
+                      .HasForeignKey(tm => tm.UmaId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             // Mapear tabla Roles

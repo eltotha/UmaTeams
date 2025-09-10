@@ -26,6 +26,9 @@
                     <li clas="nav-item">
                         <a class="nav-link" asp-controller="Uma" asp-action="Details">Detalles</a>
                     </li>
+                    <li clas="nav-item"></li>
+                        <a class="nav-link" asp-controller="UmaTeams" asp-action="Index">Equipos</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -76,6 +79,16 @@
                             <img src="https://umamusu.wiki/w/images/c/c9/2021_04_haruten.jpg" class="img-fluid rounded">
                             <p class="card-text" style="margin-top: 20px;">Detalles de la pagina</p>
                             <a class="btn btn-primary" asp-controller="Uma" asp-action="Details">Detalles</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4"></div>
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Equipos</h5>
+                            <img src="https://umamusu.wiki/w/images/0/05/2020_11_mile_champ.jpg" class="img-fluid rounded">
+                            <p class="card-text" style="margin-top: 20px;">Forma tu propios Equipos.</p>
+                            <a class="btn btn-primary" asp-controller="UmaTeams" asp-action="Index">Crear Equipo</a>
                         </div>
                     </div>
                 </div>
