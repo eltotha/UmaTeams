@@ -9,19 +9,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Tarea2.Data
 {
-
-     public class User : IdentityUser<int>
-    {
-        // Navegación a roles
-         public ICollection<IdentityUserRole<int>> UserRoles { get; set; } = new List<IdentityUserRole<int>>();
-    }
-
-    public class Role : IdentityRole<int>
-    {
-        public ICollection<IdentityUserRole<int>> UserRoles { get; set; } = new List<IdentityUserRole<int>>();
-    }
-
-    public class AppDbContext : IdentityDbContext<User, Role, int>
+    public class AppDbContext : IdentityDbContext<Usuario, IdentityRole<int>, int>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -52,8 +40,11 @@ namespace Tarea2.Data
                 entity.Property(e => e.thumb_img).HasMaxLength(500);
             });
 
-            modelBuilder.Entity<CharacterInfo>().HasKey(c => c.id);
-            modelBuilder.Entity<IdentityUserRole<int>>().HasKey(ur => new { ur.UserId, ur.RoleId });
+            // Mapear tabla Roles
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.ToTable("roles");
+            });
         }
 
         // Seed dinámico desde API
@@ -71,5 +62,7 @@ namespace Tarea2.Data
                 await SaveChangesAsync();
             }
         }
+
+
     }
 }

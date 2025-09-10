@@ -3,20 +3,21 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using Tarea2.Data;
 using Tarea2.Models;
 
 namespace Tarea2.Controllers
 {
     public class CuentaController : Controller
     {
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<Usuario> _signInManager;
+        private readonly UserManager<Usuario> _userManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly ILogger<CuentaController> _logger; 
 
         public CuentaController(
-            SignInManager<User> signInManager,
-            UserManager<User> userManager,
+            SignInManager<Usuario> signInManager,
+            UserManager<Usuario> userManager,
             RoleManager<Role> roleManager,
             ILogger<CuentaController> logger)
         {
@@ -45,8 +46,9 @@ namespace Tarea2.Controllers
 
             if (ModelState.IsValid)
             {
+                // Use UserName instead of Username if that's the property name
                 var result = await _signInManager.PasswordSignInAsync(
-                    model.Username,
+                    model.Username, // This should match your LoginViewModel
                     model.Password,
                     model.RememberMe,
                     lockoutOnFailure: false);
@@ -58,7 +60,7 @@ namespace Tarea2.Controllers
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                         return Redirect(returnUrl);
                     else
-                        return RedirectToAction("Index", "Encuestas");
+                        return RedirectToAction("Index", "Uma");
                 }
 
                 ModelState.AddModelError(string.Empty, "Usuario o contraseña incorrectos.");
@@ -76,7 +78,6 @@ namespace Tarea2.Controllers
             return View();
         }
 
-        // POST: /Cuenta/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -86,39 +87,21 @@ namespace Tarea2.Controllers
 
             if (ModelState.IsValid)
             {
-                // Buscar el rol "User" (asumiendo que existe)
-                var userRole = await _roleManager.FindByNameAsync("User");
-                if (userRole == null)
+                var user = new Usuario
                 {
-                    userRole = new Role { Name = "User", NormalizedName = "USER" };
-                    var roleResult = await _roleManager.CreateAsync(userRole);
-                    if (!roleResult.Succeeded)
-                    {
-                        ModelState.AddModelError(string.Empty, "Error al crear el rol de usuario.");
-                        return View(model);
-                    }
-                }
-
-                var user = new User
-                {
-                    Username = model.Username,
-                    Rol = userRole.Id, // Asignar el ID del rol User
+                    UserName = model.Username
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // Asignar rol al usuario
+                    // Assign default role (assuming "User" role exists)
                     await _userManager.AddToRoleAsync(user, "User");
+                    
                     _logger.LogInformation("Usuario {Username} se registró exitosamente.", model.Username);
-
-                    // Iniciar sesión automáticamente
                     await _signInManager.SignInAsync(user, isPersistent: false);
-
-                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                        return Redirect(returnUrl);
-                    else
-                        return RedirectToAction("Index", "Encuestas");
+                    
+                    return RedirectToLocal(returnUrl);
                 }
 
                 foreach (var error in result.Errors)
@@ -158,11 +141,18 @@ namespace Tarea2.Controllers
 
             var model = new PerfilViewModel
             {
-                Username = user.Username ?? string.Empty,
-
+                Username = user.UserName ?? string.Empty, // Use UserName
             };
 
             return View(model);
+        }
+
+        private IActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+                return Redirect(returnUrl);
+            else
+                return RedirectToAction("Index", "Uma");
         }
     }
 }

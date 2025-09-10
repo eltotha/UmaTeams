@@ -4,20 +4,16 @@ namespace Tarea2.Models
 {
     public class RegisterViewModel
     {
-        [Required(ErrorMessage = "El nombre de usuario es requerido.")]
-        [StringLength(20, MinimumLength = 3, ErrorMessage = "El nombre de usuario debe tener entre 3 y 20 caracteres.")]
-        [Display(Name = "Nombre de usuario")]
+        [Required(ErrorMessage = "El nombre de usuario es requerido")]
         public string Username { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "La contraseña es requerida.")]
-        [StringLength(100, ErrorMessage = "La {0} debe tener al menos {2} y como máximo {1} caracteres.", MinimumLength = 6)]
+        [Required(ErrorMessage = "La contraseña es requerida")]
         [DataType(DataType.Password)]
-        [Display(Name = "Contraseña")]
+        [StringLength(100, ErrorMessage = "La contraseña debe tener al menos {2} caracteres", MinimumLength = 6)]
         public string Password { get; set; } = string.Empty;
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirmar contraseña")]
-        [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
+        [Compare("Password", ErrorMessage = "Las contraseñas no coinciden")]
         public string ConfirmPassword { get; set; } = string.Empty;
     }
 }
