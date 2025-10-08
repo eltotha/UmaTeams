@@ -1,7 +1,6 @@
-import Navbar from "../components/NavBar";
 import styled from "styled-components";
 import Background from "../assets/HomeBackground.jpg"
-import {TransparentCard, Header, CardImage, BlackMenuText} from "../components/DefaultStyles"
+import {TrCardCenter, Header, CardImage, BlackMenuText} from "../components/DefaultStyles"
 
 /*Estilos unicos de este componente Login */
   const PageContainerWithOverlay = styled.div`
@@ -10,7 +9,7 @@ import {TransparentCard, Header, CardImage, BlackMenuText} from "../components/D
     url(${Background});
   background-size: cover;
   background-position: center;
-  min-height: 100vh;
+  min-height: 90vh;
   align-items: center;
   justify-content: center;
   padding-top: 60px;
@@ -25,24 +24,15 @@ import {TransparentCard, Header, CardImage, BlackMenuText} from "../components/D
 
 `;
 
-const TrCardCenter = styled(TransparentCard) `
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; 
-
-`;
 
 
 function Details() {
   return (
     <>
-      <Navbar />
       <PageContainerWithOverlay>
         <div style={{display: "flex", flexDirection: "row", gap: "20px"}}>
         
-          <TrCardCenter>
+          <TrCardCenter style={{maxHeight: "350px", maxWidth: "250px"}}>
             <Header>
               <CardImage src={"https://img.icons8.com/color/512/net-framework.png"}/>
             </Header>
@@ -51,7 +41,7 @@ function Details() {
             </BlackMenuText>
           </TrCardCenter>
 
-          <TrCardCenter>
+          <TrCardCenter style={{maxHeight: "350px", maxWidth: "250px"}}>
             <Header>
               <img 
                 src="https://c.tenor.com/u2cyE6qrV-wAAAAd/tenor.gif"
@@ -62,9 +52,9 @@ function Details() {
 
           </TrCardCenter>
           
-          <TrCardCenter>
+          <TrCardCenter style={{maxHeight: "350px", maxWidth: "250px"}}>
             <Header>
-              <CardImage src={"https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"}/>
+              <CardImage src={"https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"} style={{maxWidth: ""}}/>
             </Header>
             <BlackMenuText>
               El FrontEnd del proyecto esta creado en React, lo que hace posible todo lo que has visto.

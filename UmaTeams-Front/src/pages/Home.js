@@ -1,46 +1,34 @@
-import Navbar from "../components/NavBar";
 import styled from "styled-components";
 import Background from "../assets/HomeBackground.jpg"
-import {TransparentCard, Logo, Header, CardImage, BtConfirm} from "../components/DefaultStyles"
+import {TransparentCard, Logo, Header, CardImage, BtConfirm, TrCardCenter} from "../components/DefaultStyles"
 import UmaTeamsLogo from "../assets/UmaTeamsLogo.png";
 import { NavLink } from "react-router-dom";
 
 /*Estilos unicos de este componente Login */
-  const PageContainerWithOverlay = styled.div`
-  background: 
+ const PageContainerWithOverlay = styled.div`
+  background:
     linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
     url(${Background});
   background-size: cover;
   background-position: center;
-  min-height: 100vh;
-  align-items: center;
+  min-height: 90vh;
+
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+
   padding-top: 60px;
-
-  /* 🔹 Centramos el contenido */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  /* Evita scroll lateral */
   overflow-x: hidden;
-
 `;
 
-const TrCardCenter = styled(TransparentCard) `
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; 
 
-`;
 
 
 function Home() {
   return (
     <>
-      <Navbar />
       <PageContainerWithOverlay>
         <TransparentCard>
           <Header>
@@ -87,8 +75,9 @@ function Home() {
           </TrCardCenter>
 
         </div>
-
       </PageContainerWithOverlay>
+
+      
     </>
   );
 }

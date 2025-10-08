@@ -11,7 +11,6 @@ export const Card = styled.div `
     border: 2px solid pink;
     text-align: center;
     transition: transform 0.2s ease, box-shadow 0.3s ease;
-
     `
 ;
 
@@ -260,6 +259,15 @@ export const TransparentCard = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.4);
 `;
 
+export const TrCardCenter = styled(TransparentCard) `
+
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
 /* Estilos del home */
 
 export const MenuBar = styled.div`
@@ -421,3 +429,61 @@ export const TrCardGrid = styled(TransparentCard)`
   align-items: center;
 `;
 
+
+/* Footer Styles */
+export const Footer = styled.footer`
+  /* --- Fijo al fondo --- */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+
+  /* --- Fondo degradado verde --- */
+  background: #6ecc17;
+  background-image: linear-gradient(
+    to top,
+    #90e637 0%,     /* Verde más claro en la parte superior */
+    #6fcc17 100%    /* Verde más oscuro en la parte inferior */
+  );
+
+  /* --- Bordes redondeados arriba --- */
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+
+  /* --- Borde superior blanco sutil --- */
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+
+  /* --- Sombra superior para darle relieve --- */
+  box-shadow: 
+    inset 0 1px 0px rgba(255, 255, 255, 0.2),
+    0 -3px 5px rgba(0, 0, 0, 0.2);
+
+  /* --- Contenido centrado --- */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+
+  z-index: 999;
+`;
+
+
+export const FooterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+`;
+
+export const FooterLogo = styled.img`
+  height: 40px;
+  width: auto;
+  border-radius: 50%;
+`;
+
+export const FooterText = styled(MenuText)`
+  color: #000;
+  font-size: 1rem;
+  font-weight: 700;
+`;
