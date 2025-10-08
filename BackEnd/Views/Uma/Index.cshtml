@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <img src="~/images/GSchibi.png" alt=""  style="width: 50px; height: auto;">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="coll    apse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Uma" asp-action="Find">Buscar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Uma" asp-action="List">Lista</a>
+                    </li>
+                    <li clas="nav-item">
+                        <a class="nav-link" asp-controller="Uma" asp-action="Details">Detalles</a>
+                    </li>
+                    <li clas="nav-item"></li>
+                        <a class="nav-link" asp-controller="UmaTeams" asp-action="Index">Equipos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+  <section class="bg-light py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 d-flex justify-content-center" style="margin: auto;">
+                <img src="https://cdn2.steamgriddb.com/logo_thumb/66d91d4433fee7788003cc720ac4f805.png" 
+                     alt="Imagen principal" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+    </section>
+
+
+    <!-- Servicios -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Lo que puedes hacer</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Listar</h5>
+                            <img src="https://umamusu.wiki/w/images/1/11/ES-W02bVAAAB57v.jpg" class="img-fluid rounded">
+                            <p class="card-text" style="margin-top: 20px;">Ver todas las Umamusume.</p>
+                            <a class="btn btn-primary" asp-controller="Uma" asp-action="List">Ver</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Buscar</h5>
+                            <img src="https://umamusu.wiki/w/images/0/05/2020_11_mile_champ.jpg" class="img-fluid rounded">
+                            <p class="card-text" style="margin-top: 20px;">Elige que Uma quieres conocer.</p>
+                            <a class="btn btn-primary" asp-controller="Uma" asp-action="Find">Empezar a buscar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Detalles</h5>
+                            <img src="https://umamusu.wiki/w/images/c/c9/2021_04_haruten.jpg" class="img-fluid rounded">
+                            <p class="card-text" style="margin-top: 20px;">Detalles de la pagina</p>
+                            <a class="btn btn-primary" asp-controller="Uma" asp-action="Details">Detalles</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4"></div>
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Equipos</h5>
+                            <img src="https://umamusu.wiki/w/images/0/0b/EsCXDBZVEAAXtAZ.jpg" class="img-fluid rounded">
+                            <p class="card-text" style="margin-top: 20px;">Forma tu propios Equipos.</p>
+                            <a class="btn btn-primary" asp-controller="UmaTeams" asp-action="Index">Crear Equipo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2025 Mi Sitio. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-white me-3">Política de Privacidad</a>
+                    <a href="#" class="text-white">Términos y Condiciones</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

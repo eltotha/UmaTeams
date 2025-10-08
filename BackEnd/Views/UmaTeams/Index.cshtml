@@ -1,0 +1,295 @@
+@model IEnumerable<Tarea2.Models.UmaTeam>
+
+@{
+    ViewData["Title"] = "Gestión de Equipos Uma";
+    Layout = "_Layout";
+}
+<!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <img src="~/images/GSchibi.png" alt=""  style="width: 50px; height: auto;">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item" style="text-align: left;"></li>
+                        <a class="nav-link" asp-controller="Uma" asp-action="Index">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Uma" asp-action="Find">Buscar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Uma" asp-action="List">Lista</a>
+                    </li>
+                    <li clas="nav-item">
+                        <a class="nav-link" asp-controller="Uma" asp-action="Details">Detalles</a>
+                    </li>
+                    <li clas="nav-item"></li>
+                        <a class="nav-link" asp-controller="UmaTeams" asp-action="Index">Equipos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<div class="container mt-4">
+    <!-- Mensajes de estado -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4"><i class="fas fa-users me-2"></i>Gestión de Equipos Uma</h1>
+        </div>
+    </div>
+
+    <!-- Formulario para crear equipo -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Crear Nuevo Equipo</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="CreateTeam" method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre del Equipo</label>
+                            <input type="text" class="form-control" name="teamName" 
+                                   placeholder="Ej: Equipo de Carreras" required minlength="2">
+                        </div>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save me-2"></i>Crear Equipo
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de equipos -->
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-3">Equipos Existentes</h3>
+            
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>No hay equipos creados todavía.
+                </div>
+            }
+            else
+            {
+                foreach (var team in Model)
+                {
+                    <div class="card mb-4">
+                        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-0">
+                                    <i class="fas fa-flag me-2"></i>@team.TeamName
+                                    <small class="text-muted">(ID: @team.Id)</small>
+                                </h4>
+                            </div>
+                            <div>
+                                <span class="badge bg-primary me-2">
+                                    @team.TeamMembers.Count miembros
+                                </span>
+                                
+                                <!-- Botón para eliminar equipo -->
+                                <form asp-action="DeleteTeam" method="post" class="d-inline">
+                                    <input type="hidden" name="teamId" value="@team.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm" 
+                                            onclick="return confirm('¿Estás seguro de que quieres eliminar el equipo \"@team.TeamName\"? Esta acción no se puede deshacer.')">
+                                        <i class="fas fa-trash me-1"></i>Eliminar Equipo
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body">
+                            <!-- Formulario para añadir miembro con búsqueda -->
+                            <div class="row mb-4">
+                                <div class="col-md-8">
+                                    <h5>Añadir Nuevo Miembro:</h5>
+                                    <form id="addMemberForm-@team.Id" asp-action="AddMember" method="post" class="row g-3">
+                                        <input type="hidden" name="teamId" value="@team.Id" />
+                                        
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control character-search" 
+                                                   data-team-id="@team.Id"
+                                                   placeholder="Buscar personaje (nombre en inglés o japonés)"
+                                                   autocomplete="off">
+                                            <input type="hidden" name="umaId" class="character-id">
+                                            <div class="search-results" style="display: none;"></div>
+                                        </div>
+                                        
+                                        <div class="col-md-2">
+                                            <button type="submit" class="btn btn-primary w-100">
+                                                <i class="fas fa-plus"></i> Añadir
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Miembros del equipo -->
+                            @if (team.TeamMembers.Any())
+                            {
+                                <h5>Miembros del Equipo:</h5>
+                                <div class="row">
+                                    @foreach (var member in team.TeamMembers)
+                                    {
+                                        <div class="col-md-3 mb-3">
+                                            <div class="card h-100">
+                                                @if (!string.IsNullOrEmpty(member.CharacterInfo?.thumb_img))
+                                                {
+                                                    <img src="@member.CharacterInfo.thumb_img" class="card-img-top" 
+                                                         alt="@member.UmaName" style="height: 200px; object-fit: cover;">
+                                                }
+                                                else
+                                                {
+                                                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" 
+                                                         style="height: 200px;">
+                                                        <i class="fas fa-user fa-3x text-white"></i>
+                                                    </div>
+                                                }
+                                                <div class="card-body">
+                                                    <h6 class="card-title">@member.UmaName</h6>
+                                                    <p class="card-text small">
+                                                        <strong>ID:</strong> @member.UmaId<br>
+                                                        <strong>Nombre JP:</strong> @member.CharacterInfo?.name_jp
+                                                    </p>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <form asp-action="RemoveMember" method="post">
+                                                        <input type="hidden" name="memberId" value="@member.Id" />
+                                                        <button type="submit" class="btn btn-danger btn-sm w-100">
+                                                            <i class="fas fa-trash me-1"></i>Eliminar
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    Este equipo no tiene miembros todavía.
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Búsqueda de personajes
+            const searchInputs = document.querySelectorAll('.character-search');
+            
+            searchInputs.forEach(input => {
+                const teamId = input.getAttribute('data-team-id');
+                const resultsDiv = input.nextElementSibling.nextElementSibling;
+                const hiddenInput = input.nextElementSibling;
+                
+                input.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.trim();
+                    
+                    if (searchTerm.length < 2) {
+                        resultsDiv.style.display = 'none';
+                        return;
+                    }
+                    
+                    fetch(`@Url.Action("SearchCharacters", "UmaTeams")?term=${encodeURIComponent(searchTerm)}`)
+                        .then(response => response.json())
+                        .then(characters => {
+                            if (characters.length > 0) {
+                                resultsDiv.innerHTML = characters.map(char => `
+                                    <div class="search-result-item" 
+                                         data-id="${char.id}"
+                                         data-name="${char.name_en}"
+                                         data-image="${char.thumb_img}">
+                                        <img src="${char.thumb_img}" style="width: 30px; height: 30px; object-fit: cover;">
+                                        ${char.name_en} (${char.name_jp}) - ID: ${char.id}
+                                    </div>
+                                `).join('');
+                                resultsDiv.style.display = 'block';
+                            } else {
+                                resultsDiv.innerHTML = '<div class="p-2">No se encontraron personajes</div>';
+                                resultsDiv.style.display = 'block';
+                            }
+                        });
+                });
+                
+                // Seleccionar personaje de los resultados
+                resultsDiv.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('search-result-item')) {
+                        const item = e.target;
+                        input.value = item.getAttribute('data-name');
+                        hiddenInput.value = item.getAttribute('data-id');
+                        resultsDiv.style.display = 'none';
+                    }
+                });
+                
+                // Ocultar resultados al hacer clic afuera
+                document.addEventListener('click', function(e) {
+                    if (!input.contains(e.target) && !resultsDiv.contains(e.target)) {
+                        resultsDiv.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Confirmacion para eliminar equipo
+            const deleteForms = document.querySelectorAll('form[asp-action="DeleteTeam"]');
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    const confirmed = confirm('¿Estás seguro de que quieres eliminar este equipo? Esta acción eliminará todos los miembros del equipo y no se puede deshacer.');
+                    if (!confirmed) {
+                        e.preventDefault();
+                    }
+                });
+            });
+            
+            // Estilos para los resultados de busqueda
+            const style = document.createElement('style');
+            style.textContent = `
+                .search-results {
+                    position: absolute;
+                    background: white;
+                    border: 1px solid #ccc;
+                    max-height: 200px;
+                    overflow-y: auto;
+                    z-index: 1000;
+                    width: 100%;
+                }
+                .search-result-item {
+                    padding: 8px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+                .search-result-item:hover {
+                    background-color: #f8f9fa;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+}

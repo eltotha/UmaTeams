@@ -1,0 +1,62 @@
+@model List<Tarea2.Models.CharacterInfo>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1 class="text-center my-4">Lista de Personajes</h1>
+
+<!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <img src="~/images/GSchibi.png" alt=""  style="width: 50px; height: auto;">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item" style="text-align: left;"></li>
+                        <a class="nav-link" asp-controller="Uma" asp-action="Index">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Uma" asp-action="Find">Buscar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Uma" asp-action="List">Lista</a>
+                    </li>
+                    <li clas="nav-item">
+                        <a class="nav-link" asp-controller="Uma" asp-action="Details">Detalles</a>
+                    </li>
+                    <li clas="nav-item"></li>
+                        <a class="nav-link" asp-controller="UmaTeams" asp-action="Index">Equipos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<table class="table table-striped table-hover" style="margin-top: 50px;">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Imagen</th>
+            <th>Nombre (EN)</th>
+            <th>Nombre (JP)</th>
+            <th>Categoría</th>
+            <th>Colores</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.row_number</td>
+                <td><img src="@c.thumb_img" alt="@c.id" style="width:80px; border-radius:8px;" /></td>
+                <td>@c.name_en</td>
+                <td>@c.name_jp</td>
+                <td>@c.category_label</td>
+                <td>
+                    <span style="display:inline-block; width:20px; height:20px; background:@c.color_main;"></span>
+                    <span style="display:inline-block; width:20px; height:20px; background:@c.color_sub;"></span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
