@@ -19,4 +19,4 @@ Antes de ejecutar el proyecto, asegúrate de tener instalado:
 
 ## ⚠️ IMPORTANTE ⚠️
 
-El proyecto requiere del FrontEnd y BackEnd corriendo en simultaneo para algunas funciones (como el login para el acceso de la app).
+El proyecto requiere del FrontEnd y BackEnd corriendo en simultaneo para algunas funciones (como el login para el acceso de la app) que requieren lectura de archivos formatos JSON (Como la funcionalidad de "Meet All UmaMusumes!")
