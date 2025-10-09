@@ -4,15 +4,18 @@ import Navbar from "../components/NavBar";
 import Background from "../assets/HomeBackground.jpg";
 import UmaTeamsLogo from "../assets/UmaTeamsLogo.png";
 import {
-  TransparentCard,
   Header,
   Logo,
   CharacterCard,
   CharacterName,
   CharacterDescription,
   CharactersGrid,
-  TrCardGrid
+  TrCardGrid,
+  TrCardCenter,
+  SearchInput
+
 } from "../components/DefaultStyles";
+import FooterBar from "../components/Footer";
 
 const BackgroundImg = styled.img`
   position: absolute;
@@ -42,38 +45,6 @@ const PageContainerWithOverlay = styled.div`
   padding-top: 60px;
   overflow-x: hidden;
 `;
-
-const TrCardCenter = styled(TransparentCard)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; 
-`;
-
-const SearchInput = styled.input`
-  padding: 10px 15px;
-  width: 300px;
-  max-width: 80%;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.82);  /* Fondo semi-transparente */
-  backdrop-filter: blur(5px);            /* Efecto blur */
-  color: #ff3385;                           /* Texto blanco */
-  margin: 20px auto;
-  display: block;
-  font-size: 1em;
-  transition: border 0.3s ease, background 0.3s ease;
-
-  &::placeholder {
-    color: #ff66b2;     /* Color del placeholder */
-  }
-
-  &:focus {
-    outline: none;
-    border-color: #ff3385;
-  }
-`;
-
 
 function Characters() {
   const [data, setData] = useState([]); 
@@ -153,6 +124,7 @@ function Characters() {
             </CharactersGrid>
           </TrCardGrid>
         </div>
+        <FooterBar />
       </PageContainerWithOverlay>
     </>
   );

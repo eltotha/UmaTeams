@@ -23,9 +23,20 @@ namespace Tarea2.Controllers
         [HttpGet("List")]
         public async Task<IActionResult> List()
         {
-            var personajes = await _context.CharacterInfo.ToListAsync();
-            return Ok(personajes);
+            try
+            {
+                var personajes = await _context.CharacterInfo.ToListAsync();
+                return Ok(personajes);
+            }
+            catch (Exception ex)
+            {
+                // Esto permitirá ver el error en la consola del backend
+                Console.WriteLine("Error List personajes: " + ex.Message);
+                return StatusCode(500, new { message = ex.Message });
+            }
         }
+
+
 
     }
 }

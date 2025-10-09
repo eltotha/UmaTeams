@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Background from "../assets/HomeBackground.jpg"
 import {TrCardCenter, Header, CardImage, BlackMenuText} from "../components/DefaultStyles"
+import NavBar from "../components/NavBar";
+import FooterBar from "../components/Footer";
 
 /*Estilos unicos de este componente Login */
   const PageContainerWithOverlay = styled.div`
@@ -30,6 +32,7 @@ function Details() {
   return (
     <>
       <PageContainerWithOverlay>
+        <NavBar />
         <div style={{display: "flex", flexDirection: "row", gap: "20px"}}>
         
           <TrCardCenter style={{maxHeight: "350px", maxWidth: "250px"}}>
@@ -64,6 +67,7 @@ function Details() {
           </TrCardCenter>
 
         </div>
+        <FooterBar />
 
       </PageContainerWithOverlay>
     </>

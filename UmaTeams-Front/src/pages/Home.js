@@ -3,6 +3,8 @@ import Background from "../assets/HomeBackground.jpg"
 import {TransparentCard, Logo, Header, CardImage, BtConfirm, TrCardCenter} from "../components/DefaultStyles"
 import UmaTeamsLogo from "../assets/UmaTeamsLogo.png";
 import { NavLink } from "react-router-dom";
+import NavBar from "../components/NavBar";
+import FooterBar from "../components/Footer";
 
 /*Estilos unicos de este componente Login */
  const PageContainerWithOverlay = styled.div`
@@ -30,6 +32,7 @@ function Home() {
   return (
     <>
       <PageContainerWithOverlay>
+        <NavBar />
         <TransparentCard>
           <Header>
             <Logo src={UmaTeamsLogo} alt="Logo UmaTeams" />
@@ -75,6 +78,7 @@ function Home() {
           </TrCardCenter>
 
         </div>
+        <FooterBar />
       </PageContainerWithOverlay>
 
       

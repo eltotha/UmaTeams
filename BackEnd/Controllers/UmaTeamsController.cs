@@ -1,127 +1,96 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Tarea2.Services;
 using Tarea2.Models;
 
 namespace Tarea2.Controllers
 {
-    [Authorize]
-    public class UmaTeamsController : Controller
+    [ApiController]
+    [Route("[controller]")]
+    public class UmaTeamController : ControllerBase
     {
         private readonly IUmaTeamService _umaTeamService;
 
-        public UmaTeamsController(IUmaTeamService umaTeamService)
+        public UmaTeamController(IUmaTeamService umaTeamService)
         {
             _umaTeamService = umaTeamService;
         }
 
-        public async Task<IActionResult> Index()
+        // ======================================
+        // 1️⃣ Crear equipo completo (POST JSON)
+        // ======================================
+
+
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreateTeamWithMembers([FromBody] UmaTeam request)
+        {
+
+
+            if (string.IsNullOrWhiteSpace(request.TeamName))
+                return BadRequest("El nombre del equipo no puede estar vacío.");
+
+            var team = await _umaTeamService.CreateTeamAsync(request.TeamName);
+
+            if (request.TeamMembers != null && request.TeamMembers.Count > 0)
+            {
+                foreach (var umaId in request.TeamMembers)
+                {
+                    await _umaTeamService.AddMemberToTeamAsync(team.Id, umaId.Id);
+                }
+            }
+
+            return Ok(new
+            {
+                message = "Equipo creado correctamente.",
+                teamId = team.Id,
+                teamName = team.TeamName
+            });
+        }
+
+        // ======================================
+        // 2️⃣ Borrar equipo completo (DELETE JSON)
+        // ======================================
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> DeleteTeam([FromBody] UmaTeam request)
+        {
+            if (request.Id <= 0)
+                return BadRequest("Debe especificar un ID de equipo válido.");
+
+            await _umaTeamService.DeleteTeamAsync(request.Id);
+            return Ok(new { message = $"Equipo con  ID {request.Id} eliminado correctamente." });
+        }
+
+
+        // ✅ LISTAR TODOS LOS EQUIPOS
+        [HttpGet("List")]
+        public async Task<IActionResult> GetAllTeams()
         {
             var teams = await _umaTeamService.GetAllTeamsAsync();
-            return View(teams);
+            return Ok(teams);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateTeam(string teamName)
+
+        [HttpPost("AddMember")]
+        public async Task<IActionResult> AddMember([FromBody] AddMemberRequest request)
         {
+            Console.WriteLine("UmaID: {0}; TeamID: {1}", request.UmaId, request.TeamId);
+
             try
             {
-                if (string.IsNullOrWhiteSpace(teamName) || teamName.Length < 2)
-                {
-                    TempData["ErrorMessage"] = "El nombre del equipo debe tener al menos 2 caracteres";
-                    return RedirectToAction(nameof(Index));
-                }
+                if (request.UmaId <= 0 || request.TeamId <= 0)
+                    return BadRequest(new { message = "ID de equipo o personaje inválido." });
 
-                await _umaTeamService.CreateTeamAsync(teamName.Trim());
-                TempData["SuccessMessage"] = $"Equipo '{teamName}' creado exitosamente";
+                await _umaTeamService.AddMemberToTeamAsync(request.TeamId, request.UmaId);
+                return Ok(new { message = "Miembro añadido correctamente." });
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Error al crear el equipo: " + ex.Message;
+                return BadRequest(new { message = "Error al añadir miembro: " + (ex.InnerException?.Message ?? ex.Message) });
             }
-
-            return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddMember(int teamId, int umaId)
-        {
-            try
-            {
-                if (umaId <= 0)
-                {
-                    TempData["ErrorMessage"] = "ID de personaje inválido";
-                    return RedirectToAction(nameof(Index));
-                }
 
-                await _umaTeamService.AddMemberToTeamAsync(teamId, umaId);
-                TempData["SuccessMessage"] = "Personaje añadido al equipo exitosamente";
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "Error al añadir miembro: " + ex.Message;
-            }
 
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> RemoveMember(int memberId)
-        {
-            try
-            {
-                await _umaTeamService.RemoveMemberFromTeamAsync(memberId);
-                TempData["SuccessMessage"] = "Miembro eliminado del equipo";
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "Error al eliminar miembro: " + ex.Message;
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        // Nueva acción para búsqueda de personajes (API)
-        [HttpGet]
-        public async Task<IActionResult> SearchCharacters(string term)
-        {
-            var characters = await _umaTeamService.SearchCharactersAsync(term);
-            return Json(characters.Select(c => new
-            {
-                id = c.id,
-                name_en = c.name_en,
-                name_jp = c.name_jp,
-                thumb_img = c.thumb_img
-            }));
-        }
-    
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteTeam(int teamId)
-        {
-            try
-            {
-                var team = await _umaTeamService.GetTeamByIdAsync(teamId);
-                if (team == null)
-                {
-                    TempData["ErrorMessage"] = "Equipo no encontrado";
-                    return RedirectToAction(nameof(Index));
-                }
-
-                var teamName = team.TeamName;
-                var memberCount = team.TeamMembers.Count;
-
-                await _umaTeamService.DeleteTeamAsync(teamId);
-                
-                TempData["SuccessMessage"] = $"Equipo '{teamName}' eliminado exitosamente. Se removieron {memberCount} miembros.";
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "Error al eliminar el equipo: " + ex.Message;
-            }
-            
-            return RedirectToAction(nameof(Index));
-        }
     }
 }

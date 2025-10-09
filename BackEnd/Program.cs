@@ -3,12 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Tarea2.Data;
 using Tarea2.Services;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using Google.Protobuf.WellKnownTypes;
+using System.Text.Json.Serialization; // <-- agregar
 
 var builder = WebApplication.CreateBuilder(args);
 
+// ======================================
 // Conexión MySQL
+// ======================================
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -16,7 +17,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     )
 );
 
-// Configurar Identity - FIXED: Removed duplicate Role specification
+// ======================================
+// Configurar Identity
+// ======================================
 builder.Services.AddIdentity<Usuario, Role>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
@@ -29,53 +32,74 @@ builder.Services.AddIdentity<Usuario, Role>(options =>
 })
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders()
-.AddRoles<Role>(); // Moved AddRoles here instead of duplicate specification
+.AddRoles<Role>();
 
+// ======================================
+// CORS
+// ======================================
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReact",
         policy => policy
-            .WithOrigins("http://localhost:3000") // tu React
+            .WithOrigins("http://localhost:3000")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials());
 });
 
-// Agregar esto después de los otros servicios
+// ======================================
+// Servicios propios
+// ======================================
 builder.Services.AddScoped<IUmaTeamService, UmaTeamService>();
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+// ======================================
+// Registrar HttpClient para el seed
+// ======================================
+builder.Services.AddHttpClient();
+
+// ======================================
+// Controladores con JSON ReferenceHandler
+// ======================================
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.WriteIndented = true; // opcional, para mejor lectura
+    });
 
 var app = builder.Build();
 
-// FIXED: Moved the seeding to after build but before running
+// ======================================
+// Seed roles y personajes
+// ======================================
 using (var scope = app.Services.CreateScope())
 {
+    var services = scope.ServiceProvider;
 
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
-    
-    // Ensure default roles exist
+    // Crear roles por defecto
+    var roleManager = services.GetRequiredService<RoleManager<Role>>();
     var roles = new[] { "Admin", "User", "Moderator" };
     foreach (var roleName in roles)
     {
         if (!await roleManager.RoleExistsAsync(roleName))
         {
-            await roleManager.CreateAsync(new Role 
-            { 
-                Name = roleName, 
-                NormalizedName = roleName.ToUpper() 
+            await roleManager.CreateAsync(new Role
+            {
+                Name = roleName,
+                NormalizedName = roleName.ToUpper()
             });
         }
     }
 
-
-    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    var httpClient = new HttpClient();
-    await context.SeedFromApiAsync(httpClient);
+    // Seed personajes desde API
+    var context = services.GetRequiredService<AppDbContext>();
+    var httpClient = services.GetRequiredService<HttpClient>();
+    await SeedData.SeedCharactersAsync(context, httpClient);
 }
 
-// Configure the HTTP request pipeline.
+// ======================================
+// Pipeline
+// ======================================
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -83,14 +107,16 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles(); // Added static files middleware
+app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("AllowReact");
 
-// FIXED: Removed duplicate MapStaticAssets() calls
+// ======================================
+// Rutas
+// ======================================
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Cuenta}/{action=Login}/{id?}");

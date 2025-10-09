@@ -71,7 +71,7 @@ function NavBar(){
                     <MenuText>Detalles</MenuText>
                 </NavLink>
 
-                <NavLink to="/Teams">
+                <NavLink to="/TeamMaker">
                     <MenuText>Equipos</MenuText>
                 </NavLink>
             </LinksContainer>
