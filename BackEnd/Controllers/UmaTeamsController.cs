@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Tarea2.Services;
 using Tarea2.Models;
+using Tarea2.Data;
+using TuProyecto.Data;
 
 namespace Tarea2.Controllers
 {
@@ -52,13 +54,13 @@ namespace Tarea2.Controllers
         // 2️⃣ Borrar equipo completo (DELETE JSON)
         // ======================================
         [HttpDelete("Delete")]
-        public async Task<IActionResult> DeleteTeam([FromBody] UmaTeam request)
+        public async Task<IActionResult> DeleteTeam([FromBody] DeleteTeamRequest request)
         {
             if (request.Id <= 0)
-                return BadRequest("Debe especificar un ID de equipo válido.");
+                return BadRequest("Debe especificar un ID válido.");
 
             await _umaTeamService.DeleteTeamAsync(request.Id);
-            return Ok(new { message = $"Equipo con  ID {request.Id} eliminado correctamente." });
+            return Ok(new { message = $"Equipo con ID {request.Id} eliminado correctamente." });
         }
 
 

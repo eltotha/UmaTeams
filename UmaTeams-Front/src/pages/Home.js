@@ -58,7 +58,7 @@ function Home() {
               <CardImage src={"https://umamusu.wiki/w/images/1/11/ES-W02bVAAAB57v.jpg"} alt="Logo UmaTeams" />
             </Header>
 
-            <NavLink to="/Team">
+            <NavLink to="/TeamMaker">
               <BtConfirm style={{margin: "20px auto 0 auto;"}}>
                 Create a team for them!
             </BtConfirm>

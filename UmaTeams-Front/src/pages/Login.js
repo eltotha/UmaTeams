@@ -1,12 +1,22 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import styled from "styled-components";
-import {BtConfirm, FormGroup, TxtBox, TransparentCard, ButtonContainer, Header, Logo, CheckboxContainer } from "../components/DefaultStyles";
+import {
+  BtConfirm,
+  FormGroup,
+  TxtBox,
+  TransparentCard,
+  ButtonContainer,
+  Header,
+  Logo,
+  CheckboxContainer
+} from "../components/DefaultStyles";
 import UmaTeamsLogo from "../assets/UmaTeamsLogo.png";
 import Background from "../assets/BackgroundLogin.jpg";
 import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
-/*Estilos unicos de este componente Login */
-  const PageContainerWithOverlay = styled.div`
+/*Estilos únicos de este componente Login */
+const PageContainerWithOverlay = styled.div`
   background: 
     linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
     url(${Background});
@@ -19,38 +29,39 @@ import { Link, useNavigate } from "react-router-dom";
   padding: 20px;
 `;
 
-
 function Login() {
+  // Contexto para guardar datos del usuario
+  const { setUser } = useContext(UserContext);
 
-  //Constantes necesarias para el POST al backend
+  // Constantes necesarias para el POST al backend
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [message, setMessage] = useState("");
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Crear un FormData para enviar como formulario
-    const formData = new FormData();
-    formData.append("Username", username);
-    formData.append("Password", password);
-    formData.append("RememberMe", rememberMe);
-
     try {
       const response = await fetch("http://localhost:5045/Cuenta/Login", {
         method: "POST",
-        body: formData, // se envia como formulario
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          Username: username,
+          Password: password,
+          RememberMe: rememberMe
+        }),
       });
 
-      const result = await response.text(); //Devuelve un string para verificar el resultado
+      const data = await response.json(); // JSON devuelto por el backend
 
-      if (result === "true") {
+      if (response.ok) {
+        setUser(data); // guardar datos en el contexto
         setMessage("Login correcto ✅");
-        Navigate("/Home");
+        navigate("/Home");
       } else {
-        setMessage(result); //Mensaje de error en caso de fallo
+        setMessage(data.message || "Error al iniciar sesión ❌");
       }
     } catch (error) {
       console.error("Error al conectar con el servidor:", error);
@@ -61,10 +72,9 @@ function Login() {
   return (
     <PageContainerWithOverlay>
       <TransparentCard>
-
         <Header>
           <Logo src={UmaTeamsLogo} alt="Logo UmaTeams" /> <br />
-          <label style={{textSizeAdjust: "5px"}}>Inicio de Sesión</label>
+          <label style={{ textSizeAdjust: "5px" }}>Inicio de Sesión</label>
         </Header>
 
         <form onSubmit={handleSubmit}>
@@ -77,7 +87,6 @@ function Login() {
               onChange={(e) => setUsername(e.target.value)}
               required
             />
-            
           </FormGroup>
 
           <FormGroup>
@@ -101,22 +110,20 @@ function Login() {
             Recordarme
           </CheckboxContainer>
 
-
           <ButtonContainer>
             <BtConfirm type="submit">Ingresar</BtConfirm>
-
           </ButtonContainer>
-        </form> <br/>
+        </form>
+        <br/>
         {message && <p>{message}</p>}
 
-        <footer style={{display: "flex", justifyContent: "center"}}> 
+        <footer style={{ display: "flex", justifyContent: "center" }}>
           No tienes una cuenta?
-          <Link to="/Register" style={{color: "#ff66b2"}}> Registrate!</Link>
+          <Link to="/Register" style={{ color: "#ff66b2" }}> Registrate!</Link>
         </footer>
       </TransparentCard>
     </PageContainerWithOverlay>
   );
 }
-
 
 export default Login;

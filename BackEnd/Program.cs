@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Tarea2.Data;
 using Tarea2.Services;
-using System.Text.Json.Serialization; // <-- agregar
+using Newtonsoft.Json; // ✅ Usamos Newtonsoft.Json
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson; // ✅ Para AddNewtonsoftJson
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,13 +59,15 @@ builder.Services.AddScoped<IUmaTeamService, UmaTeamService>();
 builder.Services.AddHttpClient();
 
 // ======================================
-// Controladores con JSON ReferenceHandler
+// Controladores con Newtonsoft.Json (sin referencias $id / $values)
 // ======================================
 builder.Services.AddControllersWithViews()
-    .AddJsonOptions(options =>
+    .AddNewtonsoftJson(options =>
     {
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-        options.JsonSerializerOptions.WriteIndented = true; // opcional, para mejor lectura
+        // 🔹 Evitar ciclos de referencia y desactivar PreserveReferencesHandling
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
+        options.SerializerSettings.Formatting = Formatting.Indented; // opcional, para JSON legible
     });
 
 var app = builder.Build();

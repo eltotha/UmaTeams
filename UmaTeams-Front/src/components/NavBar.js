@@ -74,6 +74,10 @@ function NavBar(){
                 <NavLink to="/TeamMaker">
                     <MenuText>Equipos</MenuText>
                 </NavLink>
+
+                <NavLink to="/Account">
+                    <MenuText>Cuenta</MenuText>
+                </NavLink>
             </LinksContainer>
         </NavContainer>
 

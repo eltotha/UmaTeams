@@ -511,3 +511,54 @@
       border-color: #ff3385;
     }
   `;
+
+
+  /* TEAM MAKER */
+
+export const TeamCard = styled(Card)`
+  margin-top: 10px;
+  border: 2px solid #6ecc17;
+  width: 90%;       /* ligeramente más estrecho */
+  padding: 10px;    /* menos padding */
+
+  display: flex;
+  flex-direction: column;  /* apilar elementos verticalmente */
+  align-items: center;     /* centrar horizontalmente */
+  justify-content: center; /* centrar verticalmente si es necesario */
+  text-align: center;      /* centra texto dentro de los elementos */
+`;
+
+
+// Card de personajes más grande
+export const CharacterCardLarge = styled(CharacterCard)`
+  width: 150px;        // más ancho
+  height: 200px;       // más alto
+  padding: 10px;
+  margin: 8px;
+  font-size: 1rem;     // texto más grande
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 140px;      // imagen más grande
+    height: 150px;
+    border-radius: 8px; // opcional, esquinas redondeadas
+  }
+`;
+
+// Nombre del personaje más grande
+export const CharacterNameLarge = styled(CharacterName)`
+  font-size: 1rem;
+  margin-top: 5px;
+  text-align: center;
+  font-weight: bold;
+`;
+
+
+// Grid más compacto
+export const CharactersGridSmall = styled(CharactersGrid)`
+  gap: 5px;
+  justify-content: flex-start;
+`;

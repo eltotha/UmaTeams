@@ -13,7 +13,6 @@ import {
   TrCardGrid,
   TrCardCenter,
   SearchInput
-
 } from "../components/DefaultStyles";
 import FooterBar from "../components/Footer";
 
@@ -50,7 +49,7 @@ function Characters() {
   const [data, setData] = useState([]); 
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null); 
-  const [searchTerm, setSearchTerm] = useState(""); // estado para búsqueda
+  const [searchTerm, setSearchTerm] = useState(""); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,8 +57,21 @@ function Characters() {
         const response = await fetch("http://localhost:5045/Uma/List");
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const json = await response.json();
-        setData(json);
+
+        console.log("Antes de procesar, json recibido:", json);
+
+        // ✅ Manejo robusto del formato devuelto por .NET
+        const characters = Array.isArray(json)
+          ? json
+          : Array.isArray(json.$values)
+          ? json.$values
+          : [];
+
+        console.log("Después de procesar, characters.length:", characters.length);
+
+        setData(characters);
       } catch (err) {
+        console.error("Error cargando personajes:", err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -71,9 +83,9 @@ function Characters() {
   if (loading) return <></>;
   if (error) return <p style={{ textAlign: "center", color: "red" }}>Error: {error}</p>;
 
-  // Filtrar personajes según el searchTerm
+  // ✅ Filtrar personajes solo si hay datos
   const filteredData = data.filter(character =>
-    character.name_en.toLowerCase().includes(searchTerm.toLowerCase())
+    character.name_en?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -82,14 +94,12 @@ function Characters() {
       <PageContainerWithOverlay>
         <BackgroundImg src={Background} />
 
-        {/* Card del logo */}
         <TrCardCenter>
           <Header>
             <Logo src={UmaTeamsLogo} />
           </Header>
         </TrCardCenter>
 
-        {/* Barra de búsqueda */}
         <SearchInput 
           type="text" 
           placeholder="Buscar personaje..." 
@@ -97,7 +107,6 @@ function Characters() {
           onChange={(e) => setSearchTerm(e.target.value)} 
         />
 
-        {/* Grid de personajes */}
         <div style={{ marginTop: "20px", width: "100%" }}>
           <TrCardGrid>
             <CharactersGrid>
@@ -108,16 +117,16 @@ function Characters() {
                 >
                     <CharacterName>{character.name_en}</CharacterName>
                     {character.description && (
-                    <CharacterDescription>{character.description}</CharacterDescription>
+                      <CharacterDescription>{character.description}</CharacterDescription>
                     )}
                     {character.category_label && (
-                    <p><strong>Categoría:</strong> {character.category_label}</p>
+                      <p><strong>Categoría:</strong> {character.category_label}</p>
                     )}
                     {character.thumb_img && (
-                    <img 
+                      <img 
                         src={character.thumb_img} 
                         alt={character.name_en} 
-                    />
+                      />
                     )}
                 </CharacterCard>
               ))}
