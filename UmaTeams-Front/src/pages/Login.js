@@ -29,7 +29,7 @@ const PageContainerWithOverlay = styled.div`
   padding: 20px;
 `;
 
-function Login() {
+function Login({ onLogin }) {
   // Contexto para guardar datos del usuario
   const { setUser } = useContext(UserContext);
 
@@ -58,6 +58,7 @@ function Login() {
 
       if (response.ok) {
         setUser(data); // guardar datos en el contexto
+        onLogin(data);
         setMessage("Login correcto ✅");
         navigate("/Home");
       } else {

@@ -24,7 +24,7 @@ const PageContainerWithOverlay = styled.div`
   overflow-x: hidden;
 `;
 
-function Account() {
+function Account({ onLogout }) {
   const { user, setUser } = useContext(UserContext);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -40,6 +40,7 @@ function Account() {
       const result = await response.json();
       setMessage(result.message);
       setUser(null); // Limpiamos el contexto
+      onLogout({});
       navigate("/"); // Redirige al login
     } catch (error) {
       console.error(error);
