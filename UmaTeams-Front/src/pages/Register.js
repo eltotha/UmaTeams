@@ -139,9 +139,9 @@ function Register() {
         {message && <p style={{ textAlign: "center", margin: "15px 0" }}>{message}</p>}
 
         <footer style={{ display: "flex", justifyContent: "center" }}>
-        ¿Ya tienes una cuenta?
+            ¿Ya tienes una cuenta?
             <Link to="/" style={{ color: "#ff66b2", marginLeft: "5px" }}>
-                Inicia Sesión!
+              Inicia Sesión!
             </Link>
         </footer>
       </TransparentCard>

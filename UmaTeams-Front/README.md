@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+# UmaTeams Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este directorio contiene el frontend de [UmaTeams](https://github.com/eltotha/UmaTeams), la plataforma para la gestión y creacion de equipos de los personajes de UmaMusume.
 
-## Available Scripts
+## Características
 
-In the project directory, you can run:
+- Interfaz moderna y responsiva para la gestión de equipos, proyectos y tareas.
+- Integración con una API backend para persistencia de datos.
+- Gestión de usuarios y roles.
+- Listados dinámicos, formularios y componentes personalizados.
 
-### `npm start`
+## Tecnologías utilizadas
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **React**
+- **JavaScript/TypeScript**
+- **CSS/Styled Components**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Instalación
 
-### `npm test`
+1. Clona el repositorio:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   ```bash
+   git clone https://github.com/eltotha/UmaTeams.git
+   cd UmaTeams/UmaTeams-Front
+   ```
 
-### `npm run build`
+2. Instala las dependencias:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   ```bash
+   npm install
+   # o
+   yarn install
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Uso en desarrollo
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Para iniciar la aplicación en modo desarrollo ejecuta:
 
-### `npm run eject`
+```bash
+npm start
+# o
+yarn start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+La aplicación estará disponible en [http://localhost:3000](http://localhost:3000) (o el puerto que corresponda).
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Script comunes
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- `npm run start`: Inicia el servidor de desarrollo.
+- `npm run build`: Genera una versión de producción en la carpeta `build`.
+- `npm run test`: Ejecuta los tests definidos.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Estructura de carpetas
 
-## Learn More
+```
+UmaTeams-Front/
+ │
+ ├── public/
+ ├── src/
+ │    ├── components/
+ │    ├── pages/
+ │    ├── services/
+ │    └── App.js
+ ├── package.json
+ └── README.md
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Contribuir
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+¡Las contribuciones son bienvenidas!
 
-### Code Splitting
+1. Haz un fork del repositorio.
+2. Crea una nueva rama (`git checkout -b mi-feature`).
+3. Realiza tus cambios y haz commit (`git commit -am 'Añade nueva funcionalidad'`).
+4. Haz push a la rama (`git push origin mi-feature`).
+5. Abre un Pull Request.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Licencia
 
-### Analyzing the Bundle Size
+Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](../LICENSE) para más detalles.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Autor
 
-### Making a Progressive Web App
+- [@eltotha](https://github.com/eltotha)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+¿Falta información específica del proyecto? ¡Dímelo y lo añado!

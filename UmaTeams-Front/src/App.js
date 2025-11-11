@@ -38,13 +38,6 @@ function App(){
             <Route path="/Account" element={<Account onLogout={handleUser} />} />
           </>
         }
-
-
-        {/* <Route path="/Home" element={<Home />} />
-        <Route path="/Details" element={<Details />}/>
-        <Route path="/Characters" element={<Characters />} />
-        <Route path="/TeamMaker" element={<TeamMaker />} />
-        <Route path="/Account" element={<Account onLogout={handleUser} />} /> */}
         
         {/* Ruta para manejar páginas no encontradas */}
         <Route path="*" element={<LoginFail />} />
