@@ -64,25 +64,3 @@ UmaTeams-Front/
  ├── package.json
  └── README.md
 ```
-
-## Contribuir
-
-¡Las contribuciones son bienvenidas!
-
-1. Haz un fork del repositorio.
-2. Crea una nueva rama (`git checkout -b mi-feature`).
-3. Realiza tus cambios y haz commit (`git commit -am 'Añade nueva funcionalidad'`).
-4. Haz push a la rama (`git push origin mi-feature`).
-5. Abre un Pull Request.
-
-## Licencia
-
-Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](../LICENSE) para más detalles.
-
-## Autor
-
-- [@eltotha](https://github.com/eltotha)
-
----
-
-¿Falta información específica del proyecto? ¡Dímelo y lo añado!
